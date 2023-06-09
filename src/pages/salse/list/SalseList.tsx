@@ -20,7 +20,6 @@ const SalseList = () => {
   // Get Data 
   const {data, isLoading, error} = useFrappeGetDocList('Sales Invoice', {
     fields: ['name', 'status', "posting_date", 'posting_time', 'customer_name', 'paid_amount', 'net_total', 'remarks'],
-    limit_start: 50,
     limit: filterLimit,
       orderBy: {
       field: 'creation',

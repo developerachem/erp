@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import SearchSelect from '../../../components/searchSelect/searchSelect';
 import { generator } from "../../../utils/idGenerator"
 import Swal from 'sweetalert2';
+import { useParams } from 'react-router-dom';
 
 const init = {
   customer: "ETL-0001",
@@ -26,18 +27,15 @@ const init = {
   remarks: "",
   delivery_warehouse: "",
 }
+const InvoiceEdit = () => {
 
-
-
-const SalseAdd = () => {
   const [items, setItems] = useState([])
   const [wareHouse, setWareHouse] = useState([])
   const [data, setData] = useState([])
   const [loadItems, setLoandItems] = useState([])
   const [modalId, setModalId] = useState('')
 
-
-  console.log(items);
+  // console.log(data);
 
   // load all needed data
   useEffect(() => {
@@ -46,7 +44,7 @@ const SalseAdd = () => {
         Authorization: "token c0d774a0441927e:0a39da4a71b6144"
       }
     }).then((res) => res.json()).then((data) => {
-      console.log(data)
+      // console.log(data)
       setLoandItems(data.data)
     }).catch((err) => {
       console.log(err)
@@ -66,7 +64,7 @@ const SalseAdd = () => {
     }]))
   }
 
-  const [customer, setCustomer] = useState('')
+  const [customer, setCustomer] = useState('This Is Toyed')
   const [territory, setTerritory] = useState("")
 
   // // Get Data 
@@ -75,7 +73,6 @@ const SalseAdd = () => {
   //   limit: 200,
   // })
   const remainingBalance = data?.filter((d) => d.customer_name === customer)[0]?.excel_remaining_balance;
-
 
   // Item Delete Handler
   const handleItemDelete = (id) => {
@@ -109,7 +106,7 @@ const SalseAdd = () => {
   }
 
   // Form Field Handler 
-  const handleSubmitInvoice = (e) => {
+  const handleSubmitEditInvoice = (e) => {
     e.preventDefault()
 
     const submitObj = {
@@ -121,7 +118,7 @@ const SalseAdd = () => {
     }
 
     const options = {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: "token c0d774a0441927e:0a39da4a71b6144"
@@ -131,7 +128,7 @@ const SalseAdd = () => {
 
     fetch(`http://excel_erpnext.localhost:8000/api/resource/Sales Invoice`, options).then((res) => res.json()).then(() => Swal.fire({
         title: 'Success',
-        text : 'Sales Invoice Crated Sucessfully',
+        text : 'Sales Invoice Edited Sucessfully',
         icon : 'success'
       })
     )
@@ -147,11 +144,12 @@ const SalseAdd = () => {
 
     // close the modal
     setModalId('')
-    console.log(selectItem);
+    // console.log(selectItem);
   }
+
   return (
     <>
-      <chakra.form onSubmit={handleSubmitInvoice}>
+      <chakra.form onSubmit={handleSubmitEditInvoice}>
         <div className="flex justify-between border mb-3 rounded-md p-4">
           <h1 className='text-xl'>Add New Invoice</h1>
           <Button variant="outline" colorScheme="facebook" type='submit' size='sm' >Submit</Button>
@@ -255,8 +253,6 @@ const SalseAdd = () => {
                         <div >
                           <ul className='item-box !list-none flex flex-col border-l border-r border-b mt-2 rounded'>
                             {loadItems?.length > 0 && loadItems?.map((el) => (<li className='py-1.5 border-t px-3 cursor-pointer' onClick={() => handleItemClick(el, data?.tempId)}>{el?.item_name}</li>))}
-
-
                           </ul>
                         </div>
                       </Box>}
@@ -291,4 +287,4 @@ const SalseAdd = () => {
   )
 }
 
-export default SalseAdd
+export default InvoiceEdit

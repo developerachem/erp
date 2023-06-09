@@ -13,6 +13,7 @@ const TableHead = () => {
             <Th>Net Total</Th>
             <Th>Due Amount</Th>
             <Th>Remarks</Th>
+            <Th>Action</Th>
         </Tr>
     </Thead>
   )

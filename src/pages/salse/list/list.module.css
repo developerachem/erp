@@ -1,0 +1,36 @@
+.actions{
+    position: relative;
+}
+
+.actions svg{
+    cursor: pointer;
+}
+
+.action_btn:hover ul{
+    visibility: visible;
+    opacity: 1;
+    top: 75%;
+    border-radius: 5px;
+}
+
+.actions ul{
+    width: 100px ;
+    border: 1px solid #ddd;
+    position: absolute;
+    top: 80%;
+    right: 50%;
+    background-color: #fff;
+    z-index: 99999999;
+    transition: .5s;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.actions ul li button,
+.actions ul li a
+{
+    display: block;
+    padding: 7px 15px;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+}

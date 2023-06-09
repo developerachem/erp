@@ -5,6 +5,7 @@ import Dashboard from "./pages/dashboard/Dashboard"
 import SalseAdd from "./pages/salse/add/SalseAdd"
 import SalseList from "./pages/salse/list/SalseList"
 import WelcomePage from "./pages/welcome-page/WelcomePage"
+import InvoiceEdit from "./pages/salse/edit/Invoice-edit"
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/sales/add" element={<SalseAdd />} />
             <Route path="/sales/list" element={<SalseList />} />
+            <Route path="/sales/edit/:name" element={<InvoiceEdit />} />
           </Route>
         </Routes>
       </div>
