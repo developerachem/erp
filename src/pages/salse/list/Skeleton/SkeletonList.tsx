@@ -1,12 +1,59 @@
-import { Skeleton, Stack, Tr } from '@chakra-ui/react'
+import { Skeleton, Stack, Td, Tr } from '@chakra-ui/react'
 import React from 'react'
 
 const SkeletonList = () => {
   return (
     <Tr>
-        <Stack>
-            <Skeleton height='20px' width='100%' />
-        </Stack>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
+        <Td>
+          <Stack>
+              <Skeleton height='20px' width='100%' />
+          </Stack>
+        </Td>
     </Tr>
   )
 }

@@ -1,18 +1,14 @@
 import { Td, Tr } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
-import { HiOutlineDotsVertical } from "react-icons/hi";
-import listCss from './list.module.css'
 import Swal from 'sweetalert2';
-
+import ListSkeleton from './Skeleton/ListSkeleton';
 
 const propps ={
   data : Object, 
-  id : Number
+  id : Number,
+  loading: Boolean
 }
-
-const TableBody = ({data, id} = propps) => {
-
-  
+const TableBody = ({data, id, loading} = propps) => {
   // Invoice Delete Handler
   const handleInvoiceDelete = (name = String) => {
     const documentToBeDeleted = {
@@ -30,8 +26,6 @@ const TableBody = ({data, id} = propps) => {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-
-          
           Swal.fire(
             {
               title : 'Deleted Success!',
@@ -44,22 +38,23 @@ const TableBody = ({data, id} = propps) => {
         }
       })
     }
-  }
+  }  
   
   return (
     <>
-        <Tr>
+        {data && (
+          <Tr>
             <Td>{id}</Td>
             <Td>
-                <Link to="/">{data?.name}</Link>
+                <Link to={`/sales/${data?.name}`} className='underline'>{data?.name}</Link>
             </Td>
             <Td
               style={{
-                color : (data?.status === 'Draft') && 'red' || 
-                (data?.status === 'Completed') && 'green' || 
-                (data?.status === 'To Deliver	') && 'gray'
+                color : (data?.docstatus === 0) && 'red' || 
+                (data?.docstatus === 1) && 'green' || 
+                (data?.docstatus === 2) && 'gray'
               }}
-            >{data?.status}</Td>
+            >{data?.docstatus === 0 && "Draft" || data?.docstatus === 1 && "Submitted" || data?.docstatus === 2 && "Cancelled" }</Td>
             <Td>{data?.posting_date}</Td>
             <Td>{data?.posting_time}</Td>
             <Td>{data?.customer_name}</Td>
@@ -67,7 +62,7 @@ const TableBody = ({data, id} = propps) => {
             <Td>{data?.net_total}</Td>
             <Td>৳6,375.00</Td>
             <Td>{data?.remarks}</Td>
-            <Td className={listCss.actions}>
+            {/* <Td className={listCss.actions}>
               <div className={listCss.action_btn}>
                 <HiOutlineDotsVertical size={20} />
                 <ul>
@@ -76,8 +71,12 @@ const TableBody = ({data, id} = propps) => {
                   <li><button onClick={() => handleInvoiceDelete(data?.name)}>Delete</button></li>
                 </ul>
               </div>
-            </Td>
-        </Tr>
+            </Td> */}
+          </Tr>
+        )}
+        {loading && (
+          <ListSkeleton />
+        )}
     </>
   )
 }

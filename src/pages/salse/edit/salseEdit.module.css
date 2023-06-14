@@ -1,0 +1,37 @@
+.submit{
+    box-shadow: 0 0 10px #2c4492be;
+    background-color:   #2c4392 !important;
+    color: white;
+    padding: 15px 30px !important;
+}
+
+.submit:hover{
+    background-color: #001455 !important;
+}
+
+.add_item{
+    background-color: #2c4392 !important;
+    box-shadow: 0 0 10px #2c4392;
+    color: white;
+    padding: 15px 20px !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.add_item:hover{
+    background-color: #001455 !important;
+
+}
+
+.label{
+    position: relative;
+    display: block;
+}
+
+.label span{
+    position: absolute;
+    top: -25%;
+    left: 0;
+    font-size: 12px;
+}

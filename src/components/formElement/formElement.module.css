@@ -1,0 +1,35 @@
+.input{
+    position: relative;
+}
+
+.input span{
+    position: absolute;
+    top: 20%;
+    left: 2%;
+    color: var(--text);
+    transition: .5s;
+}
+
+.input input:focus ~ span{
+    top: -25% !important;
+    left: 0 !important;
+    font-size: 12px;
+}
+
+.textarea{
+    position: relative;
+}
+
+.textarea span{
+    position: absolute;
+    top: 12%;
+    left: .5%;
+    color: var(--text);
+    transition: .5s;
+}
+
+.textarea textarea:focus ~ span{
+    top: -10% !important;
+    left: 0 !important;
+    font-size: 12px;
+}

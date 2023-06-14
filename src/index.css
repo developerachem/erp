@@ -2,16 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Menu Active CSS */
+/* Color Variable */
+.light{
+    --primary : #2c4392;
+    --main-bg : #f3f3f9;
+    --bg : #fff;
+    --sidebar-bg : #2c4392;
+    --menu-color : #829df8;
+    --white : #ffffff;
+    --text : #212039 ;
+    --border : #ddd;
+    --table-bg : #d2e4f5;
+}
 
+.dark{
+    --primary : #2c4392;
+    --main-bg : #1a1d21;
+    --bg : #212529;
+    --sidebar-bg : #212529;
+    --menu-color : #829df8;
+    --white : #1b1b1b;
+    --text : #dbdbdb ;
+    --border : #333333;
+    --table-bg : #2f3133 ;
+}
+
+/* Menu Active CSS */
 ul li a.menuActive{
-    background-color: #2c4392;
-    color: white;
-    border-radius: 0 10px 10px 0;
+    /* background-color: var(--main-bg); */
+    color: var(--menu-color) !important;
 }
 
 ul li a.menuActive svg{
-    color: white;
+    color: var(--menu-color) !important;
 }
 
 /* Sub Menu Opent CSS */
@@ -22,53 +45,74 @@ ul li a.menuActive svg{
 }
 
 /* Table CSS */
+/* table{
+    border: 1px solid var(--border);
+} */
+
 th{
-    background-color: #2c4392;
-    color: white !important;
+    background-color: var(--primary);
     padding: 20px 15px  !important;
+    text-transform: capitalize !important;
+    color: white !important;
+    border-color: var(--border) !important;
 }
 
 td{
     padding: 15px  !important;
+    color: var(--text);
+    border-color: var(--border) !important;
 }
 
 thead {
     position: sticky;
     top: 0;
-    z-index: 9999;
+    z-index: 99;
 }
 
-/* input,
-select{
+.css-tdnrhj tr:nth-of-type(odd) td {
+    background: var(--table-bg) !important;
+}
+
+input,
+select,
+textarea{
     border: none !important;
-    border-bottom: 1px solid #ddd !important;
+    border-bottom: 1px solid var(--primary) !important;
     border-radius: 0 !important;
     outline: none !important;
     padding: 10px 5px !important;
-} */
+    color: var(--text);
+}
 
-/* input:focus,
+input:focus,
 input:active,
 select:focus,
-select:active{
+select:active,
+textarea:focus,
+textarea:active
+{
     border: none !important;
     box-shadow: inherit !important;
-    border-bottom: 1px solid #2c4392 !important;
-} */
+    border-bottom: 1px solid var(--primary) !important;
+}
 
 .chakra-form-control {
     position: relative;
 }
 
-.chakra-form-control label{
+/* .chakra-form-control label{
     position: absolute;
     top: 10px;
     left: 2px;
     transition: .5s;
-}
+} */
 
-input:valid ~ label,
+/* input:valid ~ label, */
 input:focus ~ label{
     top: -10px;
     font-size: 14px;
+}
+
+button{
+    font-weight: 500 !important;
 }
