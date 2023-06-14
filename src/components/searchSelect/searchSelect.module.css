@@ -4,7 +4,7 @@
 
 .search_select ul{
     position: absolute;
-    top: 100%;
+    top: 49px;
     left: 0;
     width: 600px;
     height: 300px;
@@ -37,3 +37,23 @@
 .search_select ul li:hover{
     background-color: #2c44923b;
 }
+
+.input{
+    width : 100%;
+    position: relative;
+}
+
+.input span{
+    position: absolute;
+    top: 20%;
+    left: 2%;
+    color: var(--text);
+    transition: .5s;
+}
+
+.input input:focus ~ span{
+    top: -25% !important;
+    left: 0 !important;
+    font-size: 12px;
+}
+

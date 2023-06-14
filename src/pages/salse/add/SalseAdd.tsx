@@ -1,12 +1,16 @@
-import { Box, Button, FormControl, Input, ListItem, Modal, ModalBody, ModalContent, ModalOverlay, Spinner, Table, Tbody, Td, Textarea, Th, Thead, Tr, UnorderedList, chakra, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, FormControl, Input, Spinner, Table, Tbody, Td, Th, Thead, Tr, chakra } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { MdOutlineDeleteOutline } from 'react-icons/md'
+import {RiDeleteBin6Line} from 'react-icons/ri'
 import { nextId } from '../../../utils/idGenerator'
-import { useFrappeCreateDoc, useFrappeGetDocList } from 'frappe-react-sdk';
 import { useForm } from 'react-hook-form';
 import SearchSelect from '../../../components/searchSelect/searchSelect';
 import { generator } from "../../../utils/idGenerator"
 import Swal from 'sweetalert2';
+import CInput from '../../../components/formElement/Input';
+import CTextarea from '../../../components/formElement/Textarea';
+import { useNavigate } from 'react-router-dom';
+import salseAddCss from './salseAdd.module.css';
+import { HiPlus } from 'react-icons/hi';
 
 const init = {
   customer: "ETL-0001",
@@ -21,29 +25,25 @@ const init = {
   total_qty: 1,
   total: 2000,
   contact_email: "farid@excelbd.com",
-  customer_name: "",
-  status: "Draft",
-  remarks: "",
-  delivery_warehouse: "",
 }
 
-
-
 const SalseAdd = () => {
+  const [loading, setLoading] = useState(false)
   const [items, setItems] = useState([])
   const [wareHouse, setWareHouse] = useState([])
   const [data, setData] = useState([])
   const [loadItems, setLoandItems] = useState([])
   const [modalId, setModalId] = useState('')
 
+  const Navigate = useNavigate()
 
-  console.log(items);
+  // console.log(items);
 
   // load all needed data
   useEffect(() => {
     fetch("http://excel_erpnext.localhost:8000/api/resource/Item?fields=%5B%22name%22%2C%22standard_rate%22%2C%22item_name%22%2C%22item_code%22%5D&limit=200", {
       headers: {
-        Authorization: "token c0d774a0441927e:0a39da4a71b6144"
+        Authorization: "token c0d774a0441927e:c6443d85b646cee"
       }
     }).then((res) => res.json()).then((data) => {
       console.log(data)
@@ -79,9 +79,10 @@ const SalseAdd = () => {
 
   // Item Delete Handler
   const handleItemDelete = (id) => {
-    const newData = items.filter((item) => item.id !== id)
+    const newData = items.filter((item) => item.tempId !== id)
     setItems(newData)
   }
+  console.log(items);
 
   // Item Input Change Handler 
   const handleInputChange = (e, id) => {
@@ -111,10 +112,11 @@ const SalseAdd = () => {
   // Form Field Handler 
   const handleSubmitInvoice = (e) => {
     e.preventDefault()
+    setLoading(true)
 
     const submitObj = {
       ...form,
-      customer_name: customer,
+      customer: customer,
       delivery_warehouse: wareHouse,
       territory: territory,
       items
@@ -124,17 +126,21 @@ const SalseAdd = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: "token c0d774a0441927e:0a39da4a71b6144"
+        Authorization: "token c0d774a0441927e:c6443d85b646cee"
       },
       body: JSON.stringify(submitObj),
     };
 
     fetch(`http://excel_erpnext.localhost:8000/api/resource/Sales Invoice`, options).then((res) => res.json()).then(() => Swal.fire({
-        title: 'Success',
-        text : 'Sales Invoice Crated Sucessfully',
-        icon : 'success'
-      })
-    )
+      title: 'Success',
+      text: 'Sales Invoice Crated Sucessfully',
+      icon: 'success',
+      timer: 1500,
+      timerProgressBar: true,
+    })).finally(() => {
+      Navigate('/sales/list')
+      setLoading(false)
+    })
     console.log(submitObj);
   }
 
@@ -152,19 +158,39 @@ const SalseAdd = () => {
   return (
     <>
       <chakra.form onSubmit={handleSubmitInvoice}>
-        <div className="flex justify-between border mb-3 rounded-md p-4">
-          <h1 className='text-xl'>Add New Invoice</h1>
-          <Button variant="outline" colorScheme="facebook" type='submit' size='sm' >Submit</Button>
+        <div className="flex justify-between items-center border mb-3 rounded-md p-4 m-3" style={{backgroundColor : 'var(--bg)', borderColor : 'var(--border)'}}>
+          <h1 className='text-xl' style={{color : 'var(--text)'}}>Add New Invoice</h1>
+          <Button 
+            // variant="outline" 
+            // colorScheme="facebook" 
+            type='submit' 
+            className={salseAddCss.submit}
+          >{loading ? <Spinner size='xs' /> : "Create" } </Button>
         </div>
-        <div className="border rounded-md mb-3 p-5">
+        <div className="border rounded-md mb-3 p-5 m-3 mt-5"  style={{backgroundColor : 'var(--bg)', borderColor : 'var(--border)'}}>
           <h1>Details</h1>
-          <div className="flex gap-5 mb-5">
-            <FormControl>
+          <div className="flex gap-5 mb-5 mt-3">
+            {/* <FormControl>
               <Input type='text' placeholder='Invoice Name' name='customer' onChange={handleInvoiceInput} value="SINV-####" />
-            </FormControl>
-            <FormControl>
+            </FormControl> */}
+            <CInput 
+              type="text" 
+              placeholder="Invoice Name" 
+              name="customer" 
+              handler={handleInvoiceInput} 
+              value="SINV-####" 
+            />
+
+            {/* <FormControl>Navigate
               <Input type='text' placeholder='Company' name="company" onChange={handleInvoiceInput} value="Excel Technologies Ltd." />
-            </FormControl>
+            </FormControl> */}
+            <CInput 
+              type="text" 
+              placeholder="Company" 
+              name="company" 
+              handler={handleInvoiceInput} 
+              value="Excel Technologies Ltd." 
+            />
             <FormControl>
               <SearchSelect
                 docType="Customer"
@@ -176,14 +202,21 @@ const SalseAdd = () => {
               />
             </FormControl>
             <FormControl>
-              <Input type='date' name='posting_date' onChange={(e) => setForm((prev) => ({ ...prev, posting_date: e.target.value }))} value={form.posting_date} />
+              <label className={salseAddCss.label} >
+                <span>Posting Date</span>
+                <Input type='date' name='posting_date' onChange={(e) => setForm((prev) => ({ ...prev, posting_date: e.target.value }))} value={form.posting_date} />
+              </label>
             </FormControl>
 
           </div>
           <div className="flex gap-5 mb-5">
             <FormControl>
-              <Input type='date' name="due_date" onChange={(e) => setForm((prev) => ({ ...prev, due_date: e.target.value }))} value={form.due_date} />
+              <label className={salseAddCss.label} >
+                <span>Due Date</span>
+                <Input type='date' name="due_date" onChange={(e) => setForm((prev) => ({ ...prev, due_date: e.target.value }))} value={form.due_date} />
+              </label>
             </FormControl>
+            
             <FormControl>
               <SearchSelect
                 docType="Warehouse"
@@ -191,12 +224,19 @@ const SalseAdd = () => {
                 filter='warehouse_name'
                 state={wareHouse}
                 setState={setWareHouse}
-                placeholder="Ware House"
+                placeholder="Warehouse"
               />
             </FormControl>
-            <FormControl>
+            {/* <FormControl>
               <Input type='text' onChange={handleInvoiceInput} name="total" placeholder='Net Total' value={remainingBalance} />
-            </FormControl>
+            </FormControl> */}
+              <CInput 
+                type="text" 
+                placeholder='Net Total'
+                name="total" 
+                handler={handleInvoiceInput} 
+                value={remainingBalance} 
+              />
             <FormControl>
               {/* <Input type='text' onChange={handleInvoiceInput} name="territory" placeholder='Select Territory' /> */}
               <SearchSelect
@@ -210,22 +250,33 @@ const SalseAdd = () => {
             </FormControl>
           </div>
           <div className="flex gap-5 mb-5">
-            <FormControl>
+            {/* <FormControl>
               <Textarea placeholder='Remark' name="remarks" onChange={handleInvoiceInput} />
-            </FormControl>
+            </FormControl> */}
+            <CTextarea 
+              placeholder='Remark'
+              name="remarks" 
+              handler={handleInvoiceInput} 
+            />
           </div>
         </div>
       </chakra.form>
-      <div className="border rounded-md p-5">
+      <div className="border rounded-md p-5 m-3 mt-5"  style={{backgroundColor : 'var(--bg)', borderColor : 'var(--border)'}}>
         <div className="flex justify-between mb-3">
-          <h1>Item</h1>
-          <Button onClick={handleItemAdd}>Add Item</Button>
+          <h1>Items</h1>
+          <Button 
+            onClick={handleItemAdd} 
+            className={salseAddCss.add_item}
+          > 
+            <HiPlus /> 
+            Add Item
+          </Button>
         </div>
         <Table>
           <Thead>
             <Tr>
               <Th>
-                Item
+                Item Name
               </Th>
               <Th>
                 Available Stock
@@ -263,7 +314,7 @@ const SalseAdd = () => {
 
                   </Td>
                   <Td>
-                    Selected Item
+                    0
                   </Td>
                   <Td>
                     <Input style={{ width: '150px' }} value={data.qty} onChange={(e) => handleInputChange(e, data?.tempId)} name="qty" placeholder='0' type="text" />
@@ -271,7 +322,7 @@ const SalseAdd = () => {
                   <Td><Input style={{ width: '150px' }} value={data.rate} onChange={(e) => handleInputChange(e, data?.tempId)} name="rate" placeholder='0' type="text" /></Td>
                   <Td>৳{(data.rate * data.qty) || 0}</Td>
                   <Td>
-                    <MdOutlineDeleteOutline size={25} onClick={() => handleItemDelete(data.id)} className="cursor-pointer" color="red" />
+                    <RiDeleteBin6Line size={20} onClick={() => handleItemDelete(data?.tempId)} className="cursor-pointer" color="red" />
                   </Td>
                 </Tr>
               )
@@ -281,8 +332,11 @@ const SalseAdd = () => {
               <Td></Td>
               <Td></Td>
               <Td></Td>
-              <Td>Total</Td>
-              <Td>৳{total || "0"}</Td>
+              <Td style={{color : 'var(--text)'}}>Total</Td>
+              <Td style={{color : 'var(--text)'}}>
+                 <b>৳{total || "0"}</b>
+              </Td>
+              <Td></Td>
             </Tr>
           </Tbody>
         </Table>

@@ -1,0 +1,55 @@
+
+.list{
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.list span{
+    font-size: 13px;
+    margin-bottom: -2px;
+    display: block;
+}
+
+.list h5{
+    font-size: 16px;
+}
+
+.button{
+    transition: .5s;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(20px);
+}
+
+.button button{
+    padding: 0px 25px !important;
+    height: 35px;
+    font-size: 15px;
+}
+
+.button button:nth-child(1){
+    box-shadow: 0 0 10px rgba(0, 128, 0, 0.842);
+}
+
+.button button:nth-child(2){
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.877);
+}
+
+.button button:nth-child(3){
+    box-shadow: 0 0 10px #e77f67;
+}
+
+.button button:nth-child(4){
+    box-shadow: 0 0 10px rgba(128, 128, 128, 0.507);
+}
+
+.default_button{
+    box-shadow: 0 0 10px #2c44929f;
+    border-color: var(--border);
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -10,10 +10,11 @@ const propps = {
     state: String,
     setState: Object,
     placeholder: String,
-    optionName: String
+    optionName: String,
+    edit : undefined
 }
 
-const SearchSelect = ({ docType, field, filter, state, setState, placeholder } = propps) => {
+const SearchSelect = ({ docType, field, filter, state, setState, placeholder ,  edit} = propps) => {
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState([])
     const [option, setOption] = useState({
@@ -38,7 +39,7 @@ const SearchSelect = ({ docType, field, filter, state, setState, placeholder } =
         setIsLoading(true)
         fetch(`http://excel_erpnext.localhost:8000/api/resource/${docType}${field.length > 0 ? `?fields=[${query}]` : ""}`, {
             headers: {
-                Authorization: "token c0d774a0441927e:0a39da4a71b6144"
+                Authorization: "token c0d774a0441927e:c6443d85b646cee"
             }
         }).then((res) => res.json()).then((data) => {
             console.log(data)
@@ -46,14 +47,38 @@ const SearchSelect = ({ docType, field, filter, state, setState, placeholder } =
         }).catch((err) => console.log(err)).finally(() => setIsLoading(false))
     }, [])
 
+    
+    // Label Handler Staten Managment 
+    const [label, setLabel] = useState(edit ? 'true' : '')
+
     const handleOption = (val) => {
         setOption({ ...option, open: false })
         setState(val)
+        setLabel(val)
     }
+
+    console.log(label);
+    
 
     return (
         <div className={selectCss.search_select}>
-            <Input type="text" placeholder={placeholder} value={state} onChange={(e) => setState(e.target.value)} className='w-full' onClick={() => option?.open ? setOption({ ...option, open: false }) : setOption({ ...option, open: true })} />
+            <div className={selectCss.input}>
+                <label className='w-full'>
+                    <Input 
+                        onKeyUp={(e) => setLabel(e.target.value)}
+                        type="text" 
+                        value={state} 
+                        onChange={(e) => setState(e.target.value)} 
+                        className='w-full'
+                        onClick={() => option?.open ? setOption({ ...option, open: false }) : setOption({ ...option, open: true })} 
+                        />
+                    <span style={{
+                        top : label && '-25%',
+                        left : label && '0%',
+                        fontSize : label && '12px',
+                    }}>{placeholder}</span>
+                </label>
+            </div>
             <ul style={{ visibility: option?.open && 'visible', opacity: option?.open && '1' }}>
                 <input type="text" placeholder="Search..." onChange={(e) => setOption({ ...option, filter: e.target.value })} />
                 {data?.map((opt, i) => {

@@ -29,6 +29,9 @@ const TableFooter = ({data, filterLimit} = propps) => {
             <option style={{color : 'black'}} value="50">50</option>
             <option style={{color : 'black'}} value="100">100</option>
             <option style={{color : 'black'}} value="150">150</option>
+            <option style={{color : 'black'}} value="200">200</option>
+            <option style={{color : 'black'}} value="500">500</option>
+            <option style={{color : 'black'}} value="1000">1000</option>
           </Select>
         </div>
     </div>
